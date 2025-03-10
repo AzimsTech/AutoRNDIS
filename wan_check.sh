@@ -1,19 +1,19 @@
 #!/bin/sh
 function network() {
-	#超时时间
+	# Timeout period (in seconds)
 	local timeout=30
 
-	#目标网站
-	local target=www.baidu.com
+	# Target URL
+	local target=www.google.com
 
-	#获取响应状态码
+	# Retrieve the response status code
 	local ret_code=$(curl -I -s --connect-timeout ${timeout} ${target} -w %{http_code} | tail -n1)
 
 	if [ "x$ret_code" = "x200" ]; then
-		#网络畅通
+		# Network available
 		return 1
 	else
-		#网络不畅通
+		# Network unavailable
 		return 0
 	fi
 
@@ -29,7 +29,7 @@ else
 	d=$(date '+%F %T')
 	network
 	if [ $? -eq 0 ]; then
-		echo "[$d]网络不通畅"
+		echo "[$d] Host network unreachable"
 		adb shell reboot
 	fi
 fi
