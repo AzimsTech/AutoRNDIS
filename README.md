@@ -1,37 +1,37 @@
-# 简介
+# Introduction
 
-本项目用于解决以下问题
+This project is designed to solve the following problem:
 
-OpenWrt路由器通过Android手机USB网络共享(RNDIS)方式联网时，手机有时会意外关闭网络共享(比如路由器断电)，当种情况发生时，脚本通过定时任务发现并自动打开手机的USB网络共享。
+When an OpenWrt router connects to the internet through Android phone USB network sharing (RNDIS), the phone sometimes unexpectedly turns off network sharing (for example, when the router loses power). When this situation occurs, the script uses scheduled tasks to detect and automatically turn on the phone's USB network sharing.
 
-# 使用方法
+# Usage Instructions
 
-1. 手机开启开发者模式
+1. Enable Developer Mode on your phone
 
-2. OpenWrt路由器需要安装adb
+2. Install ADB on your OpenWrt router
 
-   参考命令
+   Reference commands:
 
    ```shell
    opkg update
    opkg install adb
    ```
 
-3. 手机通过USB线连接路由器，手机会提示是否信任，选择信任。
+3. Connect your phone to the router using a USB cable. The phone will prompt whether to trust the connection; select trust.
 
-4. 将本项目脚本文件`net_check.sh`和`wan_check.sh`保存到路由器并加可执行权限
+4. Save the project script files `net_check.sh` and `wan_check.sh` to the router and make them executable
 
    ```shell
-   wget -O /usr/bin/net_check.sh https://raw.githubusercontent.com/ericwang2006/AutoRNDIS/master/net_check.sh
-   wget -O /usr/bin/wan_check.sh https://raw.githubusercontent.com/ericwang2006/AutoRNDIS/master/wan_check.sh
+   wget -O /usr/bin/net_check.sh https://raw.githubusercontent.com/AzimsTech/AutoRNDIS/master/net_check.sh
+   wget -O /usr/bin/wan_check.sh https://raw.githubusercontent.com/AzimsTech/AutoRNDIS/master/wan_check.sh
    chmod +x /usr/bin/net_check.sh /usr/bin/wan_check.sh
    ```
 
-5. OpenWrt计划任务添加
+5. Add to OpenWrt scheduled tasks
 
    ```shell
-   #如果手机没有开启USB网络共享就开启
+   # If the phone hasn't enabled USB network sharing, turn it on
    */5 * * * *  /usr/bin/net_check.sh
-   #如果长时间断网就重启一次手机
+   # If internet connection is lost for an extended period, restart the phone
    */50 * * * * /usr/bin/wan_check.sh
    ```
