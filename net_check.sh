@@ -12,7 +12,7 @@ else
 		d=$(date '+%F %T')
 		echo "[$d]fix network connection"
 		echo "[$d]fix network connection" >>/tmp/net_check.log
-		# 设置USB的状态是网络共享
+		# Enable USB tethering
 		adb shell svc usb setFunctions rndis
 	else
 		d=$(date '+%F %T')
